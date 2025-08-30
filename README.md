@@ -1,65 +1,125 @@
-⚠️ **Disclaimer**: *This project is in a preliminary state and under active development. Features and functionality may change significantly.*
+# Edge Mining Documentation Repository
 
-➡️ **Development Note**:
-- This is the **Docs repository**, specifically dedicated to documentation of the Edge Mining application.
-- The [Core repository](https://github.com/edge-mining/core) contains the main engine of the Edge Mining system.
-- The [Add-on repository](https://github.com/edge-mining/addon) provides the Home Assistant integration.
+This repository contains **only the documentation content** (Markdown files) for the Edge Mining website. The live site at [edgemining.energy](https://edgemining.energy) is automatically built and deployed via GitHub Actions.
 
+## 🏗️ Repository Structure
 
-# ⚡ Bitcoin Mining for Energy Efficiency
+### **This Repository (`edge-mining/docs`):**
+```
+edge-mining/docs/
+└── docs/                      # Documentation content ONLY
+    ├── intro.md              # Introduction
+    ├── about-us.md           # About Edge Mining
+    ├── product/              # Product documentation
+    │   └── product-cycle.md
+    ├── modelling/            # Architecture & DDD
+    │   ├── domain-driven-architecture-overview.md
+    │   └── glossary.md
+    ├── contribution.md       # How to contribute
+    └── faq.md               # Frequently asked questions
+```
 
-Bitcoin mining represents a unique opportunity to improve efficiency in both the production and use of energy, whether on an industrial scale or for smaller setups. This project aims to make mining accessible and easy to implement, providing tools to integrate mining into energy systems and maximize the use of the energy produced.
+### **Site Repository (`edge-mining/edgemining.energy`):**
+```
+edge-mining/edgemining.energy/
+├── docs/                     # VuePress site (copied from this repo)
+│   ├── .vuepress/           # VuePress configuration
+│   │   ├── config.js        # Site configuration
+│   │   ├── styles/          # Custom CSS styles
+│   │   └── public/          # Static assets (logo, favicon)
+│   ├── docs/                # Documentation content (synced from this repo)
+│   └── README.md            # Homepage content
+├── package.json             # Dependencies and scripts
+└── .github/workflows/       # Build and deploy workflows
+```
 
-## 🌞 The Challenge: Managing Excess Energy
+## 🔄 Automatic Deployment Workflow
 
-In energy production plants, especially those relying on renewable sources like solar and wind, there's often a surplus of energy generated during peak hours (for example, when there is a lot of sun or wind) that doesn't align with peak demand times. Today, the main options for managing this excess energy include:
+### **Two-Way Sync Process:**
 
-- **Selling the energy to the national grid**: This is possible only if the grid accepts the surplus, and often at unfavorable economic conditions.
-- **Purchasing additional storage systems**: Such as batteries, which can be expensive and not always scalable, limiting this option for many small producers.
-- **Using the energy for various purposes**: For instance, producing hydrogen through electrolysis, charging electric vehicles, or pumping water for hydroelectric storage. However, these solutions are often challenging and costly to implement, especially for small- and medium-sized plants.
-- **Using energy for marginal purposes**: Such as resistive heating, which generally doesn’t add significant economic value.
-- **Wasting the energy**: Which is a loss that reduces the overall efficiency of the plant.
+#### **1. Content Changes (this repo):**
+- **Push to `edge-mining/docs`** → Triggers sync workflow
+- **Copies `docs/`** → `edge-mining/edgemining.energy/docs/`
+- **Triggers build** → Deploys to `edgemining.energy`
 
-## 🔌 The Solution: Bitcoin Mining
+#### **2. Site Changes (edgemining.energy repo):**
+- **Push to `edge-mining/edgemining.energy`** → Triggers build workflow
+- **Builds VuePress** → Deploys to `edgemining.energy`
 
-Bitcoin mining is a computational process that verifies and validates transactions on the Bitcoin network. This process ensures network security, using electrical energy to power specialized devices called miners. In return for this activity, miners receive a reward in Bitcoin, making mining not only useful for the network but also economically beneficial for participants.
+## 🛠️ Setup Required
 
-This process has a unique feature that makes it particularly suitable for integration with renewable energy production plants: it is extremely flexible, able to be activated to consume energy during times of surplus and stopped immediately when energy is needed for other purposes.
+### **1. Repository Token**
+In the `edge-mining/docs` repository, add this secret:
+```
+EDGEMINING_ENERGY_TOKEN = Personal Access Token with permissions on edgemining.energy
+```
 
-Moreover, mining produces heat as a byproduct. 100% of the electrical energy used by a miner is converted into heat, making it similar to an electric heater that, in addition to providing warmth, also generates a constant economic reward.
+### **2. Repository Permissions**
+The token must have access to:
+- `edge-mining/docs` (read)
+- `edge-mining/edgemining.energy` (read/write)
 
-These characteristics make mining an ideal solution for managing excess energy, particularly in small- and medium-sized plants.
+## 📝 Current Status
 
-## 🏡 Edge Mining: A Practical Approach for Everyone
+### **✅ Completed:**
+- [x] Documentation content structure (intro, about, product, modelling, contribution, FAQ)
+- [x] GitHub Actions workflow for content sync
+- [x] VuePress site configuration (in edgemining.energy)
+- [x] Custom CSS styling with Edge Mining brand colors
+- [x] Logo and favicon from Edge Mining organization
+- [x] Navigation structure (Home, Docs, Discord, GitHub)
 
-Aside from electrical power, mining only requires a miner and a low-speed internet connection. It virtually needs nothing else, making it a very simple activity to implement anywhere.
+### **⚠️ Pending:**
+- [ ] Content review and finalization
+- [ ] Visual design improvements
+- [ ] Testing of deployment workflow
 
-You could say that the hardware implementation of a mining system is not particularly complex from a technical standpoint. In trying to implement it ourselves, we realized that the only missing element for a fully functional system was a management and automation solution for the mining process, specifically software that connects the energy production plant to the miners, regulating power on/off and energy consumption.
+## 🔧 Local Development
 
-Our project aims to develop a mining management system that:
+### **For Content Development (this repo):**
+```bash
+# Edit Markdown files in docs/
+# Push to trigger automatic sync
+```
 
-- Connects the power generation plant with one or more ASIC devices for mining.
-- Allows users, even non-experts, to automate the mining process based on specific energy requirements.
-- Helps users manage and make the most of the heat generated by the ASICs for space heating, thereby maximizing the energy surplus of the plant.
+### **For Site Development (edgemining.energy repo):**
+```bash
+npm run docs:dev      # Development server
+npm run docs:build    # Production build
+npm run docs:clean    # Clean build
+```
 
-## 💾​ Development
+### **Access:**
+- **Development**: `http://localhost:8080/` (from edgemining.energy repo)
+- **Production**: `https://edgemining.energy`
 
-Following the general overview of the project, the following link provides a deeper technical insight into how the system is structured according to Domain-Driven Design (DDD) principles. It identifies the core domain of energy optimization, categorizes supporting and generic subdomains, defines the internal structure of each, and maps the interactions between them. This approach allows us to align the software architecture with real-world needs, ensuring clarity, modularity, and scalability. The document is continuously evolving and reflects an iterative design process—nothing is final, and all aspects are considered open to revision as the system and its understanding mature over time.
+## 📋 Pull Request Checklist
 
-[👉Domain-Driven Architecture Overview](./modelling/domain-driven-architecture-overview.md)
+### **For `edge-mining/docs`:**
+- [ ] Add `EDGEMINING_ENERGY_TOKEN` secret
+- [ ] Configure repository permissions
+- [ ] Test content sync workflow
 
-The following link provides access to a shared vocabulary used throughout the Edge Mining project, following the principles of Ubiquitous Language from Domain-Driven Design (DDD). It is organized by subdomain and offers simplified definitions based on domain expertise. The goal is to ensure consistent communication between developers, domain experts, and stakeholders, and to serve as a reference point during design and implementation.
+### **For `edge-mining/edgemining.energy`:**
+- [ ] Enable GitHub Pages
+- [ ] Configure custom domain `edgemining.energy`
+- [ ] Set up CNAME file
+- [ ] Configure repository permissions
 
-[👉Glossary](./modelling/glossary.md)
+## 🎯 Next Steps
+
+1. **Create Pull Request** for `edge-mining/docs` (content only)
+2. **Create Pull Request** for `edge-mining/edgemining.energy` (VuePress site)
+3. **Configure secrets** and permissions
+4. **Test deployment workflow**
+5. **Review and finalize content**
+
+## 📚 Documentation Files
+
+- **`docs/docs/`** → All documentation content (this repo)
+- **VuePress configuration** → In edgemining.energy repo
+- **Deployment workflows** → In both repositories
 
 ---
 
-## ✏️ Conclusion
-
-Edge Mining proposes an innovative solution to optimize the use of excess energy produced by small power plants, particularly renewable ones. Integrating Bitcoin mining is a flexible, economically advantageous, and easy-to-implement choice. With our mining management system, users can maximize the efficiency of their plant, utilize the heat produced, and contribute positively to the Bitcoin network. This approach turns a potential inefficiency into a concrete opportunity for profit and sustainable energy use.
-
-## 🤝 Contributions and Feedback
-
-We welcome contributions and feedback to make this project even better. Feel free to open issues or submit pull requests.
-
-Let’s mine smarter, together.
+**Note**: This repository contains ONLY the documentation content. The VuePress site and deployment infrastructure are in the `edge-mining/edgemining.energy` repository. 

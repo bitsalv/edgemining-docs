@@ -1,0 +1,46 @@
+name: Sync Documentation Content
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'docs/**'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  sync-docs-content:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout docs repository
+        uses: actions/checkout@v4
+        with:
+          path: docs-repo
+          
+      - name: Checkout edgemining.energy repository
+        uses: actions/checkout@v4
+        with:
+          repository: edge-mining/edgemining.energy
+          token: ${{ secrets.EDGEMINING_ENERGY_TOKEN }}
+          path: edgemining-energy
+          
+      - name: Sync docs content to edgemining.energy
+        run: |
+          # Remove existing docs directory
+          rm -rf edgemining-energy/docs
+          
+          # Copy docs content
+          cp -r docs-repo/docs edgemining-energy/
+          
+      - name: Commit and push to edgemining.energy
+        working-directory: edgemining-energy
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/
+          git commit -m "Auto-sync: Update docs content from edge-mining/docs [skip ci]"
+          git push origin main
