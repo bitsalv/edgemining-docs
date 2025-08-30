@@ -1,133 +1,116 @@
 # Edge Mining Documentation Repository
 
-This repository contains **only the documentation content** (Markdown files) for the Edge Mining website. The live site at [edgemining.energy](https://edgemining.energy) is automatically built and deployed via GitHub Actions.
+This repository contains **only the documentation content** (Markdown files) for the Edge Mining website. The live site at [edgemining.energy](https://edgemining.energy) is automatically built and deployed from the [edge-mining/edgemining.energy](https://github.com/edge-mining/edgemining.energy) repository.
 
-## 🏗️ Repository Structure
+## 🎯 For Documentation Editors
 
-### **This Repository (`bitsalv/edgemining-docs`):**
-```
-edgemining-docs/
-├── docs/                      # Documentation content ONLY
-│   ├── intro.md              # Introduction
-│   ├── about-us.md           # About Edge Mining
-│   ├── product/              # Product documentation
-│   │   └── product-cycle.md
-│   ├── modelling/            # Architecture & DDD
-│   │   ├── README.md
-│   │   ├── domain-driven-architecture-overview.md
-│   │   └── glossary.md
-│   ├── contribution.md       # How to contribute
-│   └── faq.md               # Frequently asked questions
-├── images/                   # Documentation images
-└── .github/workflows/        # Sync workflow
-```
+This repository is specifically for **editing and maintaining the documentation content**. All documentation changes should be made here and will be automatically synced to the website repository.
 
-### **Site Repository (`bitsalv/edgemining.energy`):**
+> **📝 For Editors**: This repository is for **content editing** - writing, updating, and maintaining documentation. If you're a **developer** making technical changes to the website, use the [edge-mining/edgemining.energy](https://github.com/edge-mining/edgemining.energy) repository instead.
+
+## 📁 Repository Structure
+
 ```
-edgemining.energy/
-├── docs/                     # VuePress site (synced from this repo)
-│   ├── .vuepress/           # VuePress configuration
-│   │   ├── config.js        # Site configuration
-│   │   ├── styles/          # Custom CSS styles
-│   │   └── public/          # Static assets (logo, favicon)
-│   ├── docs/                # Documentation content (synced from this repo)
-│   └── README.md            # Homepage content
-├── package.json             # Dependencies and scripts
-└── .github/workflows/       # Build and deploy workflows
+docs/
+├── intro.md              # Introduction
+├── about-us.md           # About Edge Mining
+├── product/              # Product documentation
+│   └── product-cycle.md
+├── modelling/            # Architecture & DDD
+│   ├── README.md
+│   ├── domain-driven-architecture-overview.md
+│   └── glossary.md
+├── contribution.md       # How to contribute
+└── faq.md               # Frequently asked questions
 ```
 
-## 🔄 Automatic Deployment Workflow
+## 🔄 Workflow for Documentation Changes
 
-### **Two-Way Sync Process:**
+### **How to Contribute:**
 
-#### **1. Content Changes (this repo):**
-- **Push to `bitsalv/edgemining-docs`** → Triggers sync workflow
-- **Copies `docs/`** → `bitsalv/edgemining.energy/docs/`
-- **Triggers build** → Deploys to `edgemining.energy`
+1. **Edit Documentation**: Modify Markdown files in the `docs/` directory
+2. **Test Locally**: Use the VuePress site to preview changes
+3. **Commit Changes**: Push to this repository
+4. **Automatic Sync**: Changes are automatically synced to [edge-mining/edgemining.energy](https://github.com/edge-mining/edgemining.energy)
+5. **Live Update**: Website is automatically updated at [edgemining.energy](https://edgemining.energy)
 
-#### **2. Site Changes (edgemining.energy repo):**
-- **Push to `bitsalv/edgemining.energy`** → Triggers build workflow
-- **Builds VuePress** → Deploys to `edgemining.energy`
+### **Repository Relationships:**
 
-## 🛠️ Setup Required
-
-### **1. Repository Token**
-In the `bitsalv/edgemining-docs` repository, add this secret:
 ```
-EDGEMINING_ENERGY_TOKEN = Personal Access Token with permissions on edgemining.energy
+Documentation Repository (edge-mining/docs) - FOR EDITORS
+    ↓ (Auto-sync)
+Website Repository (edge-mining/edgemining.energy) - FOR DEVELOPERS
+    ↓ (Auto-deploy)
+Live Site (edgemining.energy)
 ```
 
-### **2. Repository Permissions**
-The token must have access to:
-- `bitsalv/edgemining-docs` (read)
-- `bitsalv/edgemining.energy` (read/write)
+## 🛠️ Local Development
 
-## 📝 Current Status
+### **For Documentation Editing:**
 
-### **✅ Completed:**
-- [x] Documentation content structure (intro, about, product, modelling, contribution, FAQ)
-- [x] GitHub Actions workflow for content sync
-- [x] VuePress site configuration (in edgemining.energy)
-- [x] Custom CSS styling with Edge Mining brand colors
-- [x] Logo and favicon from Edge Mining organization
-- [x] Navigation structure (Home, Docs, Discord, GitHub)
-- [x] Fixed broken links in documentation
-- [x] Synchronized content between repositories
-
-### **⚠️ Pending:**
-- [ ] Configure `EDGEMINING_ENERGY_TOKEN` secret for automatic sync
-- [ ] Test deployment workflow
-- [ ] Content review and finalization
-
-## 🔧 Local Development
-
-### **For Content Development (this repo):**
 ```bash
+# Clone this repository
+git clone https://github.com/edge-mining/docs.git
+cd docs
+
 # Edit Markdown files in docs/
-# Push to trigger automatic sync (when token is configured)
+# Test with VuePress (see below)
+# Commit and push changes
 ```
 
-### **For Site Development (edgemining.energy repo):**
+### **For Preview with VuePress:**
+
 ```bash
-cd edgemining.energy
-npm run docs:dev      # Development server
-npm run docs:build    # Production build
-npm run docs:clean    # Clean build
+# Navigate to the website repository
+cd ../edgemining.energy
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run docs:dev
+
+# View at http://localhost:8080
 ```
 
-### **Access:**
-- **Development**: `http://localhost:8080/` (from edgemining.energy repo)
-- **Production**: `https://edgemining.energy`
+## 📝 Documentation Guidelines
 
-## 📋 Setup Checklist
+### **File Organization:**
+- **`docs/intro.md`**: Project introduction and overview
+- **`docs/about-us.md`**: Mission, values, and team information
+- **`docs/product/`**: Product-specific documentation
+- **`docs/modelling/`**: Architecture and technical documentation
+- **`docs/contribution.md`**: How to contribute to the project
+- **`docs/faq.md`**: Frequently asked questions
 
-### **For `bitsalv/edgemining-docs`:**
-- [x] Repository structure corrected
-- [x] Documentation links fixed
-- [ ] Add `EDGEMINING_ENERGY_TOKEN` secret
-- [ ] Configure repository permissions
-- [ ] Test content sync workflow
+### **Markdown Standards:**
+- Use relative links: `./about-us.md` instead of `/docs/about-us.html`
+- Include proper frontmatter for VuePress
+- Follow consistent formatting and structure
+- Update table of contents when adding new pages
 
-### **For `bitsalv/edgemining.energy`:**
-- [x] VuePress configuration complete
-- [x] Build workflow functional
-- [ ] Enable GitHub Pages
-- [ ] Configure custom domain `edgemining.energy`
-- [ ] Set up CNAME file
+## 🔗 Important Links
 
-## 🎯 Next Steps
+- **Website Repository**: [edge-mining/edgemining.energy](https://github.com/edge-mining/edgemining.energy) (for developers)
+- **Live Website**: [edgemining.energy](https://edgemining.energy)
+- **Community**: [Discord](https://discord.com/invite/VQa9UY5SsS)
 
-1. **Configure GitHub Secrets** for automatic sync
-2. **Test deployment workflow**
-3. **Review and finalize content**
-4. **Enable GitHub Pages** with custom domain
+## ⚠️ Important Notes
 
-## 📚 Documentation Files
+- **Auto-sync**: Changes here are automatically synced to the website repository
+- **No direct editing**: Don't edit the website repository directly for documentation changes
+- **Immediate deployment**: Changes appear on the live site after sync
+- **Editor-focused**: This repository is for content editors, not developers
 
-- **`docs/`** → All documentation content (this repo)
-- **VuePress configuration** → In edgemining.energy repo
-- **Deployment workflows** → In both repositories
+## 🎯 Next Steps for Contributors
+
+1. **Fork this repository** (if you haven't already)
+2. **Make your changes** to the documentation
+3. **Test locally** using the VuePress development server
+4. **Create a Pull Request** to this repository
+5. **Wait for review and merge**
+6. **Changes will automatically appear** on the live site
 
 ---
 
-**Note**: This repository contains ONLY the documentation content. The VuePress site and deployment infrastructure are in the `bitsalv/edgemining.energy` repository. 
+**Note**: This repository is for documentation content only. The VuePress website and deployment infrastructure are in the [edge-mining/edgemining.energy](https://github.com/edge-mining/edgemining.energy) repository. 
